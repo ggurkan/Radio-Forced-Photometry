@@ -1,6 +1,6 @@
 # Radio-Forced-Photometry
 
-Forced photometry on a radio intensity image (should work on other images at other wavelengths). 
+Forced photometry on a radio intensity image (should work on images at other wavelengths). 
 
 It measures flux densities of sources in units of the intensity map
  - using a given aperture (in arcseconds)
