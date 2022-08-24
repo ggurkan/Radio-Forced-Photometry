@@ -80,7 +80,11 @@ def main(incatname, intmap, noisemap, aperture):
 		result_2d = model_2d.fit(np.ravel(cutout.data),x=np.ravel(x),y=np.ravel(y), params=params_2d)
 
 		gaus2dflux=result_2d.best_values['amplitude']/bm_area
-		
+		if gaus2dflux>=1.:
+			print ('Too high value measured, next to/overlap with a bright sources?')
+			gaus2dflux=apflux
+			gaus2dfluxerr=noise
+
 		if result_2d.params['amplitude'].stderr is not None:
 			gaus2dfluxerr=result_2d.params['amplitude'].stderr/bm_area
 		else:
@@ -96,7 +100,11 @@ def main(incatname, intmap, noisemap, aperture):
 
 		result_lorentz = model_lorentz.fit(np.ravel(cutout.data),x=np.ravel(x),y=np.ravel(y), params=params_lorentz)
 		loren2dflux    = result_lorentz.best_values['amplitude']/bm_area
-		
+		if loren2dflux>=1.:
+			print ('Too high value measured, next to/overlap with a bright sources?')
+			loren2dflux=0.
+			loren2dfluxerr=0.
+
 		if result_lorentz.params['amplitude'].stderr is not None:
 			loren2dfluxerr=result_lorentz.params['amplitude'].stderr/bm_area
 		else:
