@@ -9,7 +9,7 @@ It measures flux densities of sources in units of the intensity map
  
 It also reports peak flux in a given aperture, rms value at the source position 
 and 1sigma errors on fluxes obtained from the fitting. 
-All new measurements will added to the given catalogue.
+All measurements will added to a given catalogue as new columns.
 
 Requirements:
 
