@@ -17,3 +17,6 @@ Requirements:
 - intensity map as fits image
 - noise/rms map as fits image
 - aperture value (arcsec)
+
+
+Notes: lmfit and various tools/codes have been utilised for the code and further plotting utilites are under development. 
