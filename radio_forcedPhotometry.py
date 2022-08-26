@@ -81,22 +81,26 @@ def main(incatname, intmap, noisemap, flxlim, aperture):
 				x,y   = np.meshgrid(np.arange(yd), np.arange(xd))		
 				
 				#2D Gaussian fitting
-				model_2d  = lmfit.models.Gaussian2dModel()
-				params_2d = model_2d.guess(np.ravel(cutout.data),np.ravel(x),np.ravel(y))
-				result_2d = model_2d.fit(np.ravel(cutout.data),x=np.ravel(x),y=np.ravel(y), params=params_2d)
+				model_2d   = lmfit.models.Gaussian2dModel()
+				params_2d  = model_2d.guess(np.ravel(cutout.data),np.ravel(x),np.ravel(y))
+				result_2d  = model_2d.fit(np.ravel(cutout.data),x=np.ravel(x),y=np.ravel(y), params=params_2d)
 
-				gaus2dflux=result_2d.best_values['amplitude']/bm_area
+				gaus2dflux = result_2d.best_values['amplitude']/bm_area
 
 				if gaus2dflux>=flxlim:
 					print ('Overlapping with a bright source?')
 					comgaus.append('C')
+				elif gaus2dflux<0:
+					gaus2dflux    = apflux
+					gaus2dfluxerr = noise
+					comgaus.append('A')
 				else:
 					comgaus.append('A')
 
 				if result_2d.params['amplitude'].stderr is not None:
-					gaus2dfluxerr=result_2d.params['amplitude'].stderr/bm_area
+					gaus2dfluxerr = result_2d.params['amplitude'].stderr/bm_area
 				else:
-					gaus2dfluxerr=0.
+					gaus2dfluxerr = 0.
 
 				#Off-axis 2D Lorentzian profile fitting
 				model_lorentz  = lmfit.Model(lorentzian2d, independent_vars=['x', 'y'])
@@ -111,13 +115,17 @@ def main(incatname, intmap, noisemap, flxlim, aperture):
 				if loren2dflux>=flxlim:
 					print ('Overlapping with a bright source?')
 					comloren.append('C')
+				elif loren2dflux<0:
+					loren2dflux    = apflux
+					loren2dfluxerr = noise
+					comloren.append('A')
 				else:
 					comloren.append('A')	
 
 				if result_lorentz.params['amplitude'].stderr is not None:
-					loren2dfluxerr=result_lorentz.params['amplitude'].stderr/bm_area
+					loren2dfluxerr = result_lorentz.params['amplitude'].stderr/bm_area
 				else:
-					loren2dfluxerr=0.
+					loren2dfluxerr = 0.
 				
 
 				aperflux.append(apflux)
@@ -145,9 +153,9 @@ def main(incatname, intmap, noisemap, flxlim, aperture):
 	else:
 		""" Estimate size of a cutout based on the map's resolution """
 		resolution = np.sqrt(bm_maj*bm_min*3600**2)
-		aperture = resolution + 3.
-		aper_ext = (aperture/pixel_size)*2
-		extend   = aper_ext+4
+		aperture   = resolution + 3.
+		aper_ext   = (aperture/pixel_size)*2
+		extend     = aper_ext+4
 		if extend % 2 == 0:
 			extend = extend+3 #add 2.5 pixels on each side
 		else:
@@ -185,13 +193,19 @@ def main(incatname, intmap, noisemap, flxlim, aperture):
 			if gaus2dflux>=flxlim:
 				print ('Overlapping with a bright source?')
 				comgaus.append('C')
+			elif gaus2dflux<0:
+				apflux        = aper_peak_flux(ra,dec,idata,aperture/pixel_size,wcs_im,bm_area)[0]/appcorr
+				noise         = point_rms(ra,dec,rmsdata,wcs_rms)
+				gaus2dflux    = apflux
+				gaus2dfluxerr = noise
+				comgaus.append('A')
 			else:
 				comgaus.append('A')
 
 			if result_2d.params['amplitude'].stderr is not None:
-				gaus2dfluxerr=result_2d.params['amplitude'].stderr/bm_area
+				gaus2dfluxerr = result_2d.params['amplitude'].stderr/bm_area
 			else:
-				gaus2dfluxerr=0.
+				gaus2dfluxerr = 0.
 
 			#Off-axis 2D Lorentzian profile fitting
 			model_lorentz  = lmfit.Model(lorentzian2d, independent_vars=['x', 'y'])
@@ -206,13 +220,18 @@ def main(incatname, intmap, noisemap, flxlim, aperture):
 			if loren2dflux>=flxlim:
 				print ('Overlapping with a bright source?')
 				comloren.append('C')
-			else:
+			elif loren2dflux<0:
+				apflux         = aper_peak_flux(ra,dec,idata,aperture/pixel_size,wcs_im,bm_area)[0]/appcorr
+				noise          = point_rms(ra,dec,rmsdata,wcs_rms)
+				loren2dfluxerr = noise
 				comloren.append('A')	
+			else:
+				comloren.append('A')
 
 			if result_lorentz.params['amplitude'].stderr is not None:
-				loren2dfluxerr=result_lorentz.params['amplitude'].stderr/bm_area
+				loren2dfluxerr = result_lorentz.params['amplitude'].stderr/bm_area
 			else:
-				loren2dfluxerr=0.
+				loren2dfluxerr = 0.
 	
 			pflux.append(peakf)
 			err_pflux.append(noise)
