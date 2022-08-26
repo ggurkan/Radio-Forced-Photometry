@@ -23,4 +23,4 @@ Requirements:
 
 
 Notes: lmfit and various tools/codes have been utilised for the code and further plotting utilites are under development.
-Feedback are welcome.
+Feedbacks are welcome.
