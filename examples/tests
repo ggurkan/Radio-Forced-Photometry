@@ -1,5 +1,5 @@
 Tests
 
-To test the code LOFAR image, rms map and the PyBDSF catalogue of the HATLAS - NGP region was used. 
-The tests were performed both high SNR and low SNR point sources. 
-Results of these analyses can be seen in the plots.
+To test this code LOFAR image, rms map and the PyBDSF catalogue of the HATLAS - NGP region were used. 
+The tests were performed for both high SNR and low SNR point sources (see the plots).
+
