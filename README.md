@@ -3,20 +3,24 @@
 Forced photometry on a radio intensity image (should work on images at other wavelengths). 
 
 It measures flux densities of sources in units of the intensity map
- - using a given aperture (in arcseconds)
  - fitting 2D Gaussian 
  - fitting 2D off-axis Lorentzian profiles.
+ - optionally using a given aperture radius (in arcseconds)
  
-It also reports peak flux in a given aperture, rms value at the source position 
+It also reports peak flux, rms value at the source position 
 and 1sigma errors on fluxes obtained from the fitting. 
 All measurements will added to a given catalogue as new columns.
+There will be also two additonal columns as comments on values obtained from fitting [C: the source likely overlaps with a bright source, A: accept].
+
 
 Requirements:
 
 - a fits catalogue with two columns RA and DEC, 
 - intensity map as fits image
 - noise/rms map as fits image
-- aperture value (arcsec)
+- 5sigma flux threshold (in Jy based on image data)
+- [optional] aperture value (in arcsec)
 
 
-Notes: lmfit and various tools/codes have been utilised for the code and further plotting utilites are under development. 
+Notes: lmfit and various tools/codes have been utilised for the code and further plotting utilites are under development.
+Feedback are welcome.
