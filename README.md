@@ -10,7 +10,7 @@ It measures flux densities of sources in units of the intensity map
 It also reports peak flux, rms value at the source position 
 and 1-sigma errors on fluxes obtained from the fitting. 
 All measurements will added to a given catalogue as new columns.
-There will be also two additonal columns giving comments on values obtained from fitting [C: the source likely overlaps with a bright source which will depend on the flux limit you provide, A: accept].
+There will be also two additonal columns giving comments on values obtained from fitting [C [check]: the source likely overlaps with a bright source which will depend on the flux limit you provide, A: accept].
 
 
 Requirements:
